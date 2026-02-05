@@ -2,6 +2,10 @@ server:
   port: 8080
   servlet:
     context-path: /api
+  tomcat:
+    # Tăng giới hạn dữ liệu POST của Tomcat
+    max-http-post-size: 30MB
+  max-http-header-size: 128KB
 
 spring:
   datasource:
@@ -21,7 +25,17 @@ spring:
         base-url: "https://generativelanguage.googleapis.com/v1beta/openai/"
         options:
           model: "gemini-3-flash-preview"
-
+  mvc:
+    async:
+      request-timeout: 60000
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+    # Cấu hình cho Jackson xử lý chuỗi JSON lớn
+    jackson:
+      serialization:
+        fail-on-empty-beans: false
 jwt:
   signerKey: ${SIGNER_KEY}
 outbound:

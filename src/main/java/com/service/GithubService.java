@@ -30,7 +30,7 @@ public class GithubService {
 
     private List<String> parsePackageJson(String json) {
         try {
-            System.out.println("Nội dung file nhận được: " + json); // Kiểm tra nội dung thô
+
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(json);
             List<String> techs = new ArrayList<>();

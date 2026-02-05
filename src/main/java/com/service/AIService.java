@@ -22,4 +22,10 @@ public class AIService {
                 .responseMessage(chatClient.prompt(aiRequest.getMessage()).call().content())
                 .build();
     }
+
+    public AIResponse generateContent(String promp){
+        return AIResponse.builder()
+                .responseMessage(chatClient.prompt(promp).call().content())
+                .build();
+    }
 }

@@ -1,9 +1,9 @@
 package com.repository;
 
-import com.entity.CV;
+import com.entity.CVComponentTemplate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CVRepository extends JpaRepository<CV, String> {
+public interface CVComponentTemplateRepository extends JpaRepository<CVComponentTemplate, String> {
 }

@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CVMapper {
-    @Mapping(target = "user", ignore = true)
     CV  toCV(CVRequest cvRequest);
     CVResponse toCVResponse(CV cvRequest);
 }

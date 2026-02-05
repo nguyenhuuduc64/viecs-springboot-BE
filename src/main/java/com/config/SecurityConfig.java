@@ -31,6 +31,12 @@ public class SecurityConfig {
             "/ai/analyze-tech",
 
     };
+    private final String[] PUBLIC_GET_ENDPOINT = {
+            "/cv-components",
+    };
+    private final String[] PUBLIC_POST_ENDPOINT = {
+            "/cv-components",
+    };
 
 
     @Bean
@@ -40,7 +46,7 @@ public class SecurityConfig {
         httpSecurity
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173"));
+                    config.setAllowedOrigins(List.of("http://localhost:5173", "https://openedx.id.vn"));
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
@@ -51,6 +57,8 @@ public class SecurityConfig {
                             //tat ca endpoint nam trong public voi method POST thi public
                             .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
                             .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINT).permitAll()
+                            .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINT).permitAll()
+                            .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT).permitAll()
 
                             //.requestMatchers(HttpMethod.GET, "/users/**").hasAnyAuthority("SCOPE_ADMIN")
                             .anyRequest().authenticated()

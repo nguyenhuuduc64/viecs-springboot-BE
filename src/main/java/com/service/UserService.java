@@ -76,7 +76,7 @@ public class UserService {
 
     //kiểm tra trước khi method được thực hiện
     //dung hasRole thi scope la ROLE_ADMIN con hasAuthority khi co SCOPE_ADMIN
-    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN')")
+    //@PreAuthorize("hasAnyAuthority('SCOPE_ADMIN')")
     public List<UserResponse> getUsers() {
         log.info("getUsers is called");
         return userRepository.findAll().stream()
