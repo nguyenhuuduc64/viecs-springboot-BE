@@ -1,7 +1,6 @@
 package com.dto.request;
 
 
-import com.dto.response.PermissionResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

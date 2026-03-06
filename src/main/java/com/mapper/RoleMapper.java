@@ -10,11 +10,9 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
-
+    Role toRole(RoleRequest request);
+    RoleResponse toRoleResponse(Role request);
     //do entity Role nhan 1 Set permissions nhung request thi chi co String nen can bo qua field nay
-    @Mapping(target = "permissions", ignore = true)
-    Role  toRole(RoleRequest request);
-    RoleResponse toRoleResponse(Role role);
-    //void updateRole(@MappingTarget Role role, RoleRequest request);
+
 
 }

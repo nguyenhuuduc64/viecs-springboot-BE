@@ -63,13 +63,12 @@ public class AuthenticationService {
 
     //đánh dấu không inject vào contructor
     @NonFinal
-    protected static final String SIGNER_KEY = "PgGjsdBtaJV6LVYM7VIsLjMVTVMZEunePgGjsdBtaJV6LVYM7VIsLjMVTVMZEune1234567890ABCDEF";
+    protected static final String SIGNER_KEY = "ZYWT4y/G+dF+z31xQSIMo1rrCaEiuBwpbCmnewCGO4E=";
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
-
+        System.out.println("user email" + authenticationRequest.getEmail());
         var user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         boolean authenticated =  passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
@@ -115,10 +114,10 @@ public class AuthenticationService {
                         .password("") // Password trống vì login qua Google
                         .fullName(userInfo.getFamilyName())
                         .build()));
-
+        System.out.print("thay user trong DB" + user);
         // Bước D: Tạo JWT của riêng hệ thống mình trả về cho Frontend
         String token = generateToken(user);
-
+        System.out.println("token" + token);
         return AuthenticationResponse.builder()
                 .token(token)
                 .isAuthenticated(true)
@@ -162,8 +161,8 @@ public class AuthenticationService {
     }
 
     private String generateToken (User user){
-        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
-        
+        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256); //256 cho 32 bit va 512 cho 64 bit
+        System.out.println("tao token");
         //các thành phần trong 1 jwt
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
@@ -178,7 +177,7 @@ public class AuthenticationService {
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
-
+        System.out.println("co payload " + payload);
         JWSObject jwsObject = new JWSObject(jwsHeader,payload);
         try{
             jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
@@ -236,11 +235,7 @@ public class AuthenticationService {
 
     private String buildScope(User user){
         StringJoiner scopes =  new StringJoiner(" ");
-
-        if (!CollectionUtils.isEmpty(user.getRoles())) {
-            user.getRoles().forEach(role -> scopes.add(role.getName()));
-        }
-
+            scopes.add((CharSequence) user.getRoles().getName());
         return scopes.toString();
 
     }

@@ -42,7 +42,9 @@ public class AuthenticationController {
     @PostMapping("/log-in/google")
     public ApiResponse <AuthenticationResponse> authenticateGoogle(@RequestBody Map<String, String> request){
         var code = request.get("code");
+        System.out.print("dang nhap bang goolr");
         AuthenticationResponse result = authenticationService.authenticateGoogle(code);
+        System.out.println("ket qua tra ve o controller" + result);
         return ApiResponse.<AuthenticationResponse>builder()
                 .code(200)
                 .message("success")

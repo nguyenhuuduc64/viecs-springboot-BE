@@ -1,6 +1,5 @@
 package com.mapper;
 
-import com.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -10,8 +9,6 @@ import com.dto.request.UserCreationRequest;
 import com.dto.response.UserResponse;
 import com.entity.User;
 
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

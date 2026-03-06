@@ -46,6 +46,17 @@ public class CVController {
                 .build();
     }
 
+
+
+    @GetMapping("/user/{id}")
+    public ApiResponse<List<CVResponse>> getCVByUserId(@PathVariable String id){
+        return ApiResponse.<List<CVResponse>>builder()
+                .code(200)
+                .result(cvService.getCVByUserId(id)) // Hàm này trả về 1 CVResponse
+                .message("Get CV successfully")
+                .build();
+    }
+
     @PostMapping("")
     public ApiResponse<CVResponse> createCV(@RequestBody CVRequest cvRequest){
         return ApiResponse.<CVResponse>builder()

@@ -32,12 +32,13 @@ public class ApplicationInitConfig {
                                         .build()
                         ));
 
-                Set<Role> roles = Set.of(adminRole);
+
 
                 User user = User.builder()
                         .username("admin")
+                        .email("admin@gmail.com")
                         .password(passwordEncoder.encode("admin"))
-                        .roles(roles)
+                        .roles(adminRole)
                         .build();
 
                 userRepository.save(user);

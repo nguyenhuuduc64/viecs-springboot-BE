@@ -1,6 +1,5 @@
 package com.dto.request;
 
-import com.enums.Role;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
 
 @Data
 @Builder
@@ -24,6 +22,6 @@ public class UserCreationRequest {
     String fullName;
 
     String email;
-    Set<String> roles;
+    String roles;
     
 }

@@ -45,22 +45,22 @@ public class UserService {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        HashSet<Role> roles = new HashSet<>();
-        roleRepository.findById("user").ifPresent(roles::add);
+        Role finalRole;
 
+        if (request.getRoles() != null && !request.getRoles().isEmpty()) {
+            finalRole = roleRepository.findById(request.getRoles())
+                    .orElseThrow(() -> new RuntimeException("Role not found: " + request.getRoles()));
+        } else {
+            finalRole = roleRepository.findById("user") // Dùng nháy kép thưa ông chủ!
+                    .orElseThrow(() -> new RuntimeException("Default Role 'user' not found in DB"));
+        }
 
-        user.setRoles(roles);
-        UserResponse userResponse = userMapper.toUserResponse(user);
-        userRepository.save(user);
+        user.setRoles(finalRole);
+        System.out.println("user truoc khi luu" + user);
+        user = userRepository.save(user);
 
-        return  userResponse;
+        return userMapper.toUserResponse(user);
     }
-
-    /* khi dung Annotation builder ben request thi co the tao nhanh 1 request */
-    // UserCreationRequest newUserRequest = UserCreationRequest.builder()
-    // .username("name")
-    // .fullName("name")
-    // .build();
 
     public UserResponse getMyInfo() {
         //SecurityContextHolder luu thong tin dang nhap cua user sau khi login
@@ -93,7 +93,7 @@ public class UserService {
     //dieu kien kiem tra chinh chu moi co the thuc hien
     //returnObject la thong tin cua user lay tu Id
     //uathenticate la thong tin cua nguoi dung nhap hien tai qua jwt
-    @PostAuthorize("returnObject.username == authentication.name")
+    @PostAuthorize("returnObject.username == authentication.name || hasAuthority('SCOPE_admin')")
     public UserResponse getUserById(String id) {
         User user = getUserEntityById(id);
         return userMapper.toUserResponse(user);
@@ -102,9 +102,10 @@ public class UserService {
     public UserResponse updateUser(String id, UserUpdateRequest userUpdate) {
         User user = getUserEntityById(id);
         userMapper.updateUser(user, userUpdate);
-        List<Role> roles = roleRepository.findAllById(userUpdate.getRoles());
+        Role role = roleRepository.findById(userUpdate.getRoles().toString())
+                .orElseThrow(() -> new RuntimeException("Role not found: " + userUpdate.getRoles()));
         //do JPA tra ve List can converse sang Set cua User
-        user.setRoles(new  HashSet<>(roles));
+        user.setRoles(role);
         return userMapper.toUserResponse(userRepository.save(user));
     }
     @Transactional

@@ -14,5 +14,5 @@ public class UserResponse {
     //String password;
     String fullName;
     String email;
-    Set<RoleResponse> roles;
+    Role roles;
 }

@@ -16,8 +16,4 @@ public class Role {
     @Id
     String name;
     String description;
-
-    @ManyToMany
-    @EqualsAndHashCode.Exclude
-    Set<Permission>  permissions;
 }

@@ -29,6 +29,7 @@ public class CV {
 
     @ManyToOne
     @JoinColumn(name = "user_id") // Tạo cột user_id trong bảng CV để liên kết
+    @ToString.Exclude // Loại bỏ User khỏi hàm toString của CV để cắt đứt vòng lặp
     User user;
 
     @ManyToMany

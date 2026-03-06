@@ -62,6 +62,12 @@ public class CVService {
         // Nên ném lỗi thay vì trả về null để Frontend dễ xử lý lỗi 404
     }
 
+    public List<CVResponse> getCVByUserId(String id) {
+        return cvRepository.findByUserId(id).stream().map(cvMapper::toCVResponse).toList();
+        // Nên ném lỗi thay vì trả về null để Frontend dễ xử lý lỗi 404
+    }
+
+
     public CVResponse createCV(CVRequest cvRequest){
         SecurityContext context = SecurityContextHolder.getContext();
         CV cv = cvMapper.toCV(cvRequest);
