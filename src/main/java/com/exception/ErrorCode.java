@@ -43,7 +43,15 @@ public enum ErrorCode {
     FILE_UPLOAD_ERROR(5003, "File upload failed", HttpStatus.INTERNAL_SERVER_ERROR),
 
     //tokens
-    INVALID_TOKEN(5004,"token id expired",HttpStatus.UNAUTHORIZED );
+    INVALID_TOKEN(5004,"token id expired",HttpStatus.UNAUTHORIZED ),
+
+
+    //Category
+    CATEGORY_NOT_FOUND(5005, "category not found", HttpStatus.NOT_FOUND),
+
+    RECRUITMENT_NOT_FOUND(500, "recruitment not found", HttpStatus.NOT_FOUND);
+
+    //companys
 
     private final int code;
     private final String message;

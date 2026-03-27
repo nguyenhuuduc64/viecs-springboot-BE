@@ -1,9 +1,6 @@
 package com.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.validator.constraints.UUID;
@@ -21,9 +18,17 @@ public class Recruitment {
     String id;
 
     String title;
-
+    @Column(columnDefinition = "TEXT")
     String content;
 
     String salary;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    JobCategory category;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    Company company;
 
 }

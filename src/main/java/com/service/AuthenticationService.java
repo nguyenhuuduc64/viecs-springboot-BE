@@ -6,6 +6,7 @@ import com.client.OutboundUserClient;
 import com.dto.request.*;
 import com.dto.response.*;
 import com.entity.InvalidatedToken;
+import com.entity.Role;
 import com.entity.User;
 import com.exception.AppException;
 import com.exception.ErrorCode;
@@ -15,6 +16,7 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.repository.InvalidatedTokenRepository;
+import com.repository.RoleRepository;
 import com.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,6 +49,7 @@ import java.util.UUID;
 public class AuthenticationService {
     UserRepository userRepository;
     InvalidatedTokenRepository  invalidatedTokenRepository;
+    RoleRepository roleRepository;
     private final OutboundUserClient outboundUserClient;
     private final OutboundIdentityClient outboundIdentityClient;
     @NonFinal
@@ -67,7 +70,6 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
-        System.out.println("user email" + authenticationRequest.getEmail());
         var user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -107,8 +109,13 @@ public class AuthenticationService {
         OutboundUserResponse userInfo = outboundUserClient.getUserInfo("json", response.getAccessToken());
 
         // Bước C: Tìm user trong DB, nếu không có thì đăng ký mới (Social Login)
+
+        Role userRole = roleRepository.findById("user")
+                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+
         var user = userRepository.findByEmail(userInfo.getEmail())
                 .orElseGet(() -> userRepository.save(User.builder()
+                        .roles(userRole)
                         .email(userInfo.getEmail())
                         .username(userInfo.getEmail()) // Dùng email làm username
                         .password("") // Password trống vì login qua Google

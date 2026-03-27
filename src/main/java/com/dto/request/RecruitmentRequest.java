@@ -1,9 +1,8 @@
 package com.dto.request;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.entity.Company;
+import jakarta.persistence.*;
+import jdk.jfr.Category;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,5 +22,7 @@ public class RecruitmentRequest {
     String content;
 
     String salary;
+
+    String categoryId;
 
 }
